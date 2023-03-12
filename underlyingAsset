@@ -1,0 +1,7 @@
+package fp.common;
+
+public enum underlyingAsset {
+	bank_account, none, bank_account_license_deal, residential_real_estate,
+	land, bank_account_management_co, bank_account_management_deal;
+
+}
