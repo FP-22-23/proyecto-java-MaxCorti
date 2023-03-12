@@ -1,0 +1,167 @@
+package fp.assets;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+
+import fp.common.underlyingAsset;
+import fp.utiles.Checkers;
+
+
+public class Asset {
+	
+	private Integer id;
+	private Integer page;
+	private String description;
+	private underlyingAsset underlyingAssets;
+	private String location;
+	private String eif;
+	private Integer attachedSchedule;
+	private Double valueMin2016;
+	private Double valueMax2016;
+	private String incomeType;
+	private List<String> locations; 
+	
+	//Dos constructores
+	//va o no va
+	public Asset(Integer id, String description) {
+		Checkers.check("El identificador tiene que ser mayor que 0", id > 0);
+		this.id=id;
+		this.page=0;
+		Checkers.checkNoNull(description);
+		this.description=description;
+		this.underlyingAssets=null;
+		this.location=null;
+		this.eif=null;
+		this.attachedSchedule=0;
+		this.valueMin2016=0.0;
+		this.valueMax2016=0.0;
+		this.incomeType=null;
+		this.locations = new ArrayList<String>();
+	}
+
+	public Asset(Integer id, Integer page, String description, underlyingAsset underlyingAssets, String location, String eif,
+			Integer attachedSchedule, Double valueMin2016, Double valueMax2016, String incomeType) {
+		
+		Checkers.check("El identificador tiene que ser mayor que 0", id > 0);
+		this.id = id;
+		this.page = page;
+		Checkers.checkNoNull(description);
+		this.description = description;
+		this.underlyingAssets = underlyingAssets;
+		this.location = location;
+		this.eif = eif;
+		this.attachedSchedule = attachedSchedule;
+		this.valueMin2016 = valueMin2016;
+		this.valueMax2016 = valueMax2016;
+		this.incomeType = incomeType;
+		this.locations = new ArrayList<String>();
+	}
+	
+//	public Double getDifValue2016{
+//		Double var = getValueMax2016() - getValueMin2016();
+//		return var;
+//	}
+	
+
+
+	//Los metodos getters
+	public Integer getId() {
+		return id;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public underlyingAsset getUnderlyingAssets() {
+		return underlyingAssets;
+	}
+
+	public String getLocation() {
+		return location;
+	}
+
+	public String getEif() {
+		return eif;
+	}
+
+	public Integer getAttachedSchedule() {
+		return attachedSchedule;
+	}
+
+	public Double getValueMin2016() {
+		return valueMin2016;
+	}
+
+	public Double getValueMax2016() {
+		return valueMax2016;
+	}
+
+	public String getIncomeType() {
+		return incomeType;
+	}
+	
+	public List<String> getLocations() {
+		return locations;
+	}
+	
+	//Propiedad derivada
+	public void formatoCorto() {
+
+		System.out.println("El asset referido en la pagina " + getPage() + "con id " + getId());  
+	}
+
+	
+	//Criterios de igualdad
+	public int hashCode() {
+		return Objects.hash(description, id, page);
+	}
+
+	
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Asset other = (Asset) obj;
+		return Objects.equals(description, other.description) && Objects.equals(id, other.id)
+				&& Objects.equals(page, other.page);
+	}
+	
+	
+	//Representacion como cadena
+	public String toString() {
+		return "Asset [id=" + id + ", page=" + page + ", description=" + description + ", underlyingAssets="
+				+ underlyingAssets + ", location=" + location + ", eif=" + eif + ", attachedSchedule="
+				+ attachedSchedule + ", valueMin2016=" + valueMin2016 + ", valueMax2016=" + valueMax2016
+				+ ", incomeType=" + incomeType + "]";
+	}
+	
+	//Criterio de orden natural
+	public int compareTo(Asset a) {
+		int res = 0;
+		if(getId() != null && a.getId() != null) {
+		 res = getId().compareTo(a.getId());
+		}
+		if (res == 0) {
+			res = getPage().compareTo(a.getPage());
+		}
+		return res;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+
+}
