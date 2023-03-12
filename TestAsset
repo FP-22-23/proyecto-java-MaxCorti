@@ -1,0 +1,49 @@
+package fp.assets.test;
+
+import fp.assets.Asset;
+import fp.common.underlyingAsset;
+
+public class TestAsset {
+	
+	
+	public static void mostrarAsset(Asset a) {
+		System.out.println(a);
+		System.out.println("getId: " + a.getId());
+		System.out.println("getPage: " + a.getPage());
+		System.out.println("getDescription: " + a.getDescription());
+		System.out.println("getUnderlyingAssets: " + a.getUnderlyingAssets());
+		System.out.println("getLocation: " + a.getLocation());
+		System.out.println("getEif: " + a.getEif());
+		System.out.println("getAttachedSchedule: " + a.getAttachedSchedule());
+		System.out.println("getValueMin2016: " + a.getValueMin2016());
+		System.out.println("getValueMax2016: " + a.getValueMax2016());
+		System.out.println("getIncomeType: " + a.getIncomeType());
+		System.out.println("getLocations: " + a.getLocations());
+	}
+	
+	public static void testConstructor1(Integer id, Integer page, String description, underlyingAsset underlyingAssets, String location, String eif,
+			Integer attachedSchedule, Double valueMin2016, Double valueMax2016, String incomeType) {
+		
+		try {
+			Asset a = new Asset(id, page, description, underlyingAssets, location, eif, attachedSchedule,
+					valueMin2016, valueMax2016, incomeType);
+			mostrarAsset(a);
+			
+			
+		}catch(IllegalArgumentException e) {
+			System.out.println("Excepcion capturada" + e);
+			
+		}catch(Exception e) {
+			System.out.println("Excepcion inesperada" + e);
+		}
+		
+	}
+		
+
+	public static void main(String[] args) {
+		testConstructor1(1, 1, "809 North Canon Member Corp", underlyingAsset.bank_account, "Beverly Hills CA", "N/A", 
+				10, 1.001, 15.000, null);
+
+	}
+
+}
