@@ -1,0 +1,17 @@
+package fp.common;
+
+public class CalcRango {
+	public static double getRangoVal(Double valueMin2016, Double valueMax2016) {
+		if (valueMin2016.equals(null) && valueMax2016.equals(null)) {
+			return 0;
+		}else if(valueMin2016.equals(null)) {
+			return valueMax2016;
+		}else if(valueMax2016.equals(null)) {
+			return 0;
+					
+		}else {
+			return valueMax2016 - valueMin2016;
+		}
+	}
+
+}
