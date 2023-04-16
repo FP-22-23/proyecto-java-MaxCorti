@@ -21,7 +21,7 @@ El dataset resume los bienes del ex-presidente de EE.UU y el proyecto embarca en
 
 Aquí debes describir la estructura del dataset explicando qué representan los datos que contiene y la descripción de cada una de las columnas. Incluye también la URL del dataset original.
 Los datos representan unos de los bienes que poseó Trump en 2016
-El dataset está compuesto por \<N\> columnas, con la siguiente descripción:
+El dataset está compuesto por \<10\> columnas, con la siguiente descripción:
 
 * **\<columna 1>**: de tipo \<Integer\>, representa el identificador del bien en el artículo
 * **\<columna 2>**: de tipo \<Integer\>, representa la página en la que está el bien en el artículo
@@ -38,9 +38,9 @@ El dataset está compuesto por \<N\> columnas, con la siguiente descripción:
 ## Tipos implementados
 
 Describe aquí los tipos que usas en tu proyecto.
-El tipo que implemento en este proyecto se llama Asset y lo he creado con una clase
-### Tipo Base
-Descripción breve del tipo base.
+Un tipo que implemento en este proyecto se llama Asset y lo he creado con una clase
+### Tipo Base: Asset
+Descripción breve del tipo Asset.
 
 **Propiedades**:
 
@@ -54,11 +54,12 @@ Descripción breve del tipo base.
 - valueMin2016, de tipo \<Double\>, consultable. 
 - valueMax2016, de tipo \<Double\>, consultable. 
 - incomeType, de tipo \<String\>, consultable.
-- locations, de tipo \<List<String>\>, consultable.  
+- locations, de tipo \<List<String>\>, consultable. 
+- valorRango, de tipo \<Double\>, consultable.
 **Constructores**: 
 
-- Asset(Integer id, String description): Crea un objeto de tipo Asset con el identificador y una descripción con 
-  las otras propiedades en 0 o null.
+- Asset(Integer id, String description): Crea un objeto de tipo Asset con el identificador, una descripción con 
+  las otras propiedades en 0 o null y una Arraylist nueva para el atributo locations.
 - Asset(Integer id, Integer page, String description, underlyingAsset underlyingAssets, String location, String eif,
 			Integer attachedSchedule, Double valueMin2016, Double valueMax2016, String incomeType): 
   Crea un objeto de tipo Asset donde hay que intoducir todas las propiedades como parametros.
@@ -83,48 +84,68 @@ Usando los checkers del paquete fp.utiles, implemento un checker para que el ide
 -	formatoCorto que es un método que imprima la página y el identificador 
 - toString que representa el tipo con todos sus atributos 
 - ...
+### Assets_lector
+Es una clase que implento para comprobar todos los métodos que he creado y que lea el csv correctamente.
+### TestAsset
+En esta clase compruebo los métodos getters del tipo Asset y sus constructores
+### Ficheros
+Contiene un método:
+- leeFichero(String path): devuelva una lista de tipos String que se usa para leer el archivo csv.
 
 #### Tipos auxiliares
 Descripción de los tipos auxiliares que sean necesarios añadir al proyecto.
   underlyingAsset de tipo enum que puede tener los valores:
   bank_account, none, bank_account_license_deal, residential_real_estate,
 	land, bank_account_management_co, bank_account_management_deal;
+  CalcRango que tiene un método getRangoVal que devuelva la diferencia entre el valor 
+  maximo de 2016 y el valor minimo.
 
 
 ### Factoría
-Descripción breve de la factoría.
-
-- _método 1_: Descripción del método 1.
--	_método 2_: Descripción del método 2.
-
+Se llama FactoriaAsset la clase y se usa para crear tipos Asset de distintas formas
+o una lista de tipos Asset
+- _creaAsset(Integer id, Integer page, String description, underlyingAsset underlyingAssets, String location, String eif,
+			Integer attachedSchedule, Double valueMin2016, Double valueMax2016, String incomeType)_: recibe todos los parámetros para llamar 
+			al constructor del tipo Asset para crear un objeto
+-	_creaAsset(String s)_: recibe un tipo String y lo trocea adecuadamente y hace una conversión de tipos necesarios para poder llamar al método anterior y crear un tipo Asset
+-	_creaAssetsDeFichero(String titulo, String fichero)_: recibe un titulo y la ruta del fichero y crea una ArrayList para poder meter todos los tipos Asset que se van creando línea a línea desde el fichero, saltando la cabecera.
+	_parseaUnderlyingAsset(String s)_: recibe un String y lo convierta en un tipo underlyingAsset según el String de parámetro
 ### Tipo Contenedor
 
-Descripción breve del tipo contenedor.
-  Implemento una lista "locations" como atributo pero aún no realizo operaciones sobre ella
+Descripción breve del tipo Assets.
+  Assets es un tipo que se usa para guradar los tipos Asset leídos del fichero
 
 **Propiedades**:
 
-- _propiedad1_, de tipo \<Tipo1\>, consultable. 
-- _propiedad2_, de tipo \<Tipo2\>, consultable y modificable. 
-- ...
+- _nombre_, de tipo \<String\>, consultable y modificable
+- _codigo_, de tipo \<Integer\>, consultable y modificable. 
+- _assets_, de tipo \<List<Asset>\>, consultable y modificable.
 - 
 **Constructores**: 
 
-- C1: Descripción del constructor 1.
-- C2: Descripción del constructor 2.
+- Assets(): pone el nombre y el codigo a null y crea una nueva ArrayList<Asset> para assets.
+- Assets(String nombre, List<Asset> assets): recibeel nombre y una lista para assets pero pone codigo a null.
 - ...
 
 **Restricciones**:
- 
+ Hasta ahora no ha requerido restricciones
 - R1: Descripción de la restricción 1.
 - R2: Descripción de la restricción 2.
 - ...
 - 
-**Criterio de igualdad**: Describir el criterio de igualdad
+**Criterio de igualdad**: Tiene hashCode() y equals(Object obj) que se generan a partir del assets, nombre y codigo
 
 **Criterio de ordenación**: Describir el criterio de ordenación (si lo hay).
 
 **Otras operaciones**:
  
--	_método 1_: Descripción del método 1.
-- ...
+-	_calcularNumeroAssets()_: Recorre assets y cuenta el número de tipo Asset hay.
+-	_añadirAsset(Asset a)_: Añade un tipo Asset a assets
+-	_añadirAssets(Collection<Asset> c)_: Añade una colección de Asset a assets.
+-	_eliminarAsset(int index)_: Elimina un tipo Asset de assets según su índice
+-	_existeId(Integer id)_: Recorre assets para ver si exista un tipo Asset con atributo id igual al parámetro pasado
+-	_sumaValueMin2016()_: Recorre assets y suma todos los atributos valueMin2016 de cada Asset
+-	_getAssetsLand()_: Recorre assets y si su atributo underlyingAsset es land, se añade ese asset a una nueva lista y la devuelva.
+-	_assetPorUnderlyingAsset()_: Recorre assets y devuelva una map con las claves siendo el atributo underlyingAsset de los asset, y los valores una lista de los asset con dicho atributo
+-	_conteoUbicaciones()_: Recorre assets y devuelve una map con las claves siendo el atributo location de los asset u los valores siendo el número de veces que aparezca ese location.
+-	_toString()_: Devuelve un String con todos los atributos.
