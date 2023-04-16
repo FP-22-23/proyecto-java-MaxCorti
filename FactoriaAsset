@@ -1,0 +1,73 @@
+package fp.assets;
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+import fp.common.underlyingAsset;
+import fp.utiles.Checkers;
+import fp.utiles.Ficheros;
+
+
+public class FactoriaAsset {
+	//Método constructor que recibe cada atributo del tipo Asset como parámetro
+	public static Asset creaAsset(Integer id, Integer page, String description, underlyingAsset underlyingAssets, String location, String eif,
+			Integer attachedSchedule, Double valueMin2016, Double valueMax2016, String incomeType){
+		return new Asset(id, page, description, underlyingAssets, location, eif,
+				 attachedSchedule, valueMin2016, valueMax2016, incomeType);
+	}
+	//Método que recibe un String y devueve un tipo Asset 
+	public static Asset creaAsset(String s){
+		Checkers.checkNoNull(s);
+		String [] trozos = s.split(",");
+		Checkers.check("Formato de Asset no válido", trozos.length == 10);
+		
+		Integer id= Integer.parseInt(trozos[0].trim());
+		Integer page= Integer.parseInt(trozos[1].trim());
+		String description = trozos[2].trim();
+		underlyingAsset underlyingAssets = parseaUnderlyingAsset(trozos[3]);
+		String location = trozos[4].trim();
+		String eif = trozos[5].trim();
+		Integer attachedSchedule = Integer.parseInt(trozos[6].trim());
+		Double valueMin2016 = Double.parseDouble(trozos[7].replace("$", "").trim());
+		Double valueMax2016 = Double.parseDouble(trozos[8].replace("$", "").trim());
+		String incomeType = trozos[9].trim();
+		return creaAsset(id, page, description, underlyingAssets, location, eif, attachedSchedule, valueMin2016, valueMax2016, incomeType);
+	}
+	//Método que recibe un titulo de tipo String y el ruta del fichero de tipo String y devuelve una lista de tipos Asset
+	public static  ArrayList<Asset> creaAssetsDeFichero(String titulo, String fichero){
+		Checkers.checkNoNull(fichero);
+		ArrayList<Asset> res = new ArrayList<Asset>();
+		List<String> lineas = Ficheros.leeFichero(fichero);
+		lineas.remove(0);
+		for(String linea: lineas) {
+			Asset a = creaAsset(linea);
+			res.add(a);
+		}
+		return res;
+	}
+	//parsea que recibe un String y lo convierte en un tipo enum (underlyingAsset)
+	public static underlyingAsset parseaUnderlyingAsset(String s) {
+		underlyingAsset res = underlyingAsset.none;
+		if(s.equals("bank account")) {
+			res = underlyingAsset.bank_account;
+		}else if(s.equals("none") || s.equals(null)) {
+			res = underlyingAsset.none;
+		}else if(s.equals("bank account/license deal")) {
+			res = underlyingAsset.bank_account_license_deal;
+		}else if(s.equals("residential real estate")) {
+			res = underlyingAsset.residential_real_estate;
+		}else if(s.equals("land")) {
+			res = underlyingAsset.land;
+		}else if(s.equals("bank account/management co")) {
+			res = underlyingAsset.bank_account_management_co;
+		}else if(s.equals("bank account/management deal")) {
+			res = underlyingAsset.bank_account_management_deal;
+		}
+		return res;
+	}
+
+	
+}
+	
