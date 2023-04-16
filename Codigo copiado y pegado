@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import fp.common.CalcRango;
 import fp.common.underlyingAsset;
 import fp.utiles.Checkers;
 
@@ -21,9 +22,10 @@ public class Asset {
 	private Double valueMax2016;
 	private String incomeType;
 	private List<String> locations; 
+	private Double valorRango;
 	
 	//Dos constructores
-	//va o no va
+
 	public Asset(Integer id, String description) {
 		Checkers.check("El identificador tiene que ser mayor que 0", id > 0);
 		this.id=id;
@@ -38,6 +40,7 @@ public class Asset {
 		this.valueMax2016=0.0;
 		this.incomeType=null;
 		this.locations = new ArrayList<String>();
+		this.valorRango = CalcRango.getRangoVal(valueMin2016, valueMax2016);
 	}
 
 	public Asset(Integer id, Integer page, String description, underlyingAsset underlyingAssets, String location, String eif,
@@ -56,6 +59,7 @@ public class Asset {
 		this.valueMax2016 = valueMax2016;
 		this.incomeType = incomeType;
 		this.locations = new ArrayList<String>();
+		this.valorRango = CalcRango.getRangoVal(valueMin2016, valueMax2016);
 	}
 	
 //	public Double getDifValue2016{
@@ -79,7 +83,9 @@ public class Asset {
 	}
 
 	public underlyingAsset getUnderlyingAssets() {
+		
 		return underlyingAssets;
+		
 	}
 
 	public String getLocation() {
@@ -108,6 +114,10 @@ public class Asset {
 	
 	public List<String> getLocations() {
 		return locations;
+	}
+	
+	public Double getValorRango() {
+		return CalcRango.getRangoVal(valueMin2016, valueMax2016);
 	}
 	
 	//Propiedad derivada
