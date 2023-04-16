@@ -1,0 +1,39 @@
+package fp.assets.test;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import fp.assets.Asset;
+import fp.assets.Assets;
+import fp.assets.FactoriaAsset;
+
+
+public class Assets_lector {
+
+	public static void main(String[] args) {
+		ArrayList<Asset> Assets = FactoriaAsset.creaAssetsDeFichero(null, "data/2016 Part II Assets No Longer Listed.csv");
+		
+		System.out.println("Assets leídas: "+ Assets.size());
+		
+		for(Asset asset: Assets) {
+			System.out.println(asset);
+		}
+		
+		System.out.println("=========================");
+		
+		Assets a = new Assets();
+		a.añadirAssets(Assets);
+		
+		System.out.println(a.existeId(1));
+		System.out.println(a.existeId(6));
+		System.out.println("=========================");
+		System.out.println(a.sumaValueMin2016());
+		System.out.println("=========================");
+		System.out.println(a.getAssetsLand());
+		System.out.println("=========================");
+		System.out.println(a.assetPorUnderlyingAsset());
+		System.out.println("=========================");
+		System.out.println(a.conteoUbicaciones());
+	}
+
+}
