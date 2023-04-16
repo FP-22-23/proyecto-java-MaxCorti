@@ -1,0 +1,222 @@
+package fp.assets;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.SortedMap;
+import java.util.TreeMap;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+
+import fp.common.underlyingAsset;
+
+
+
+
+public class Assets {
+	//Atributos
+	private String nombre;
+	private Integer codigo;
+	private List<Asset> assets;
+	
+	//Constructores
+	public Assets() {
+		nombre = null;
+		codigo = null;
+		assets = new ArrayList<Asset>();
+	}
+	public Assets(String nombre, List<Asset> assets) {
+		this.nombre = nombre;
+		this.codigo=null;
+		this.assets = assets;
+	}
+	
+	
+	/**
+	 * @return the nombre
+	 */
+	public String getNombre() {
+		return nombre;
+	}
+	/**
+	 * @param nombre the nombre to set
+	 */
+	public void setNombre(String nombre) {
+		this.nombre = nombre;
+	}
+	
+	/**
+	 * @return the codigo
+	 */
+	public Integer getCodigo() {
+		return codigo;
+	}
+	/**
+	 * @param codigo the codigo to set
+	 */
+	public void setCodigo(Integer codigo) {
+		this.codigo = codigo;
+	}
+	
+	/**
+	 * @return the assets
+	 */
+	public List<Asset> getAssets() {
+		return assets;
+	}
+	//Método que calcule el número de objetos de tipo Asset en la lista assets
+	public int calcularNumeroAssets() {
+		Integer res = 0;
+		for(Asset asset:assets) {
+			res++;
+		}
+		return res;
+	}
+	
+	//Método para añadir un tipo Asset al final de la lista assets
+	public void añadirAsset(Asset a) {
+		if (a != null) {
+		assets.add(a);
+		}
+	}
+	
+	//Método para añadir una colección de tipos Asset al final de la lista assets
+	public void añadirAssets(Collection<Asset> c) {
+		assets.addAll(c);
+	}
+	
+	//Método para elimar un tipo Asset de la lista assets por su índice
+	public void eliminarAsset(int index) {
+		assets.remove(index);
+	}
+	
+	//Método existe
+	//Método que vea si exista un tipo Asset con el atributo id igual al parámetro pasado, dentro de la lista assets
+	public Boolean existeId(Integer id) {
+		Boolean res = false;
+		for(Asset asset:assets) {
+			if(asset.getId()==id) {
+				res = true;
+				break;
+			}
+		}
+		return res;
+	}
+	
+	//Método sumatorio
+	//Método que devuelva la suma de los valores minimios de 2016 de cada tipo Asset dentro de la lista assets
+	public Double sumaValueMin2016() {
+		Double res = 0.0;
+		for(Asset asset:assets) {
+			res += asset.getValueMin2016();
+		}
+		return res;
+	}
+	
+	//Método selección con filtrado
+	//Método que devuelva todos los tipos Asset que tienen su atributo underlyingAsset de tipo land dentro de la lista assets
+	public List<Asset> getAssetsLand() {
+		List<Asset> res = new ArrayList<Asset>();
+		//recorrer
+		for(Asset asset:assets) {
+			if(asset.getUnderlyingAssets().equals(underlyingAsset.land)) {
+			res.add(asset);
+			}
+		}
+			
+		return res;
+	}
+
+	//Método de agrupación
+	//Método que devuelva un tipo SortedMap con las claves el atributo underlyingAsset del tipo Asset dentro de la lista assets
+	// y los valores unas listas que posean los tipos Asset que tienen dicho atributo
+	public SortedMap<underlyingAsset, List<Asset>> assetPorUnderlyingAsset() {
+
+		SortedMap<underlyingAsset, List<Asset>> res = new TreeMap<>();
+		for(Asset asset: assets) {
+			underlyingAsset clave = asset.getUnderlyingAssets();
+			if (res.containsKey(clave)) {
+				res.get(clave).add(asset);
+			}else {
+				List<Asset> lista = new ArrayList<Asset>();
+				lista.add(asset);
+				res.put(clave, lista);
+			}
+		}
+		
+		return res;
+	}
+	
+	//Método de acumulación
+	//Método que devuelva un tipo SortedMap con las claves siendo los atributos location del tipo Asset de la lista assets
+	// y los valores siendo el número de veces que aperezca un tipo Asset con ese atributo location 
+	public SortedMap<String, Integer>conteoUbicaciones(){
+		SortedMap<String, Integer> res = new TreeMap<>();
+		
+		for(Asset asset: assets) {
+			String clave = asset.getLocation();
+			if(res.containsKey(clave)) {
+				res.put(clave, res.get(clave)+1);
+			}else {
+				res.put(clave, 1);
+			}
+		}
+		
+		return res;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	public int hashCode() {
+		return Objects.hash(assets, codigo, nombre);
+	}
+
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Assets other = (Assets) obj;
+		return Objects.equals(assets, other.assets) && Objects.equals(codigo, other.codigo)
+				&& Objects.equals(nombre, other.nombre);
+	}
+
+	public String toString() {
+		return "Assets [nombre=" + nombre + ", codigo=" + codigo + ", assets=" + assets + "]";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
+
+}
