@@ -86,6 +86,7 @@ Usando los checkers del paquete fp.utiles, implemento un checker para que el ide
 - ...
 ### Assets_lector
 Es una clase que implento para comprobar todos los métodos que he creado y que lea el csv correctamente.
+Por una parte, recorro el datatset por el método creaAssetsDeFichero de la clase FactoriaAsset y por otra parte uso  el método leerAssets para usar los Streams
 ### TestAsset
 En esta clase compruebo los métodos getters del tipo Asset y sus constructores
 ### Ficheros
@@ -107,9 +108,10 @@ o una lista de tipos Asset
 - _creaAsset(Integer id, Integer page, String description, underlyingAsset underlyingAssets, String location, String eif,
 			Integer attachedSchedule, Double valueMin2016, Double valueMax2016, String incomeType)_: recibe todos los parámetros para llamar 
 			al constructor del tipo Asset para crear un objeto
--	_creaAsset(String s)_: recibe un tipo String y lo trocea adecuadamente y hace una conversión de tipos necesarios para poder llamar al método anterior y crear un tipo Asset
+-	_creaAssetStr(String s)_: recibe un tipo String y lo trocea adecuadamente y hace una conversión de tipos necesarios para poder llamar al método anterior y crear un tipo Asset
 -	_creaAssetsDeFichero(String titulo, String fichero)_: recibe un titulo y la ruta del fichero y crea una ArrayList para poder meter todos los tipos Asset que se van creando línea a línea desde el fichero, saltando la cabecera.
-	_parseaUnderlyingAsset(String s)_: recibe un String y lo convierta en un tipo underlyingAsset según el String de parámetro
+-	_leerAssets(String ruta)_: recibe la ruta de tipo String y crea un Tipo Stream<Asset> a partir de ello. Luego crea un tipo Assets<Stream<Asset>> a partir del anterior. Si la ruta es vacía, salta la excepción "Fichero no encontrado"
+-	_parseaUnderlyingAsset(String s)_: recibe un String y lo convierta en un tipo underlyingAsset según el String de parámetro
 ### Tipo Contenedor
 
 Descripción breve del tipo Assets.
@@ -124,8 +126,8 @@ Descripción breve del tipo Assets.
 **Constructores**: 
 
 - Assets(): pone el nombre y el codigo a null y crea una nueva ArrayList<Asset> para assets.
-- Assets(String nombre, List<Asset> assets): recibeel nombre y una lista para assets pero pone codigo a null.
-- ...
+- Assets(String nombre, List<Asset> assets): recibe el nombre y una lista para assets pero pone codigo a null.
+- Assets(Stream<Asset> assets): recibe assets de tipo Stream<Asset> y pone el nombre y codigo a null. Además, usa un Collector para converir el Stream de entrada a una List<Asset>
 
 **Restricciones**:
  Hasta ahora no ha requerido restricciones
@@ -138,7 +140,11 @@ Descripción breve del tipo Assets.
 **Criterio de ordenación**: Describir el criterio de ordenación (si lo hay).
 
 **Otras operaciones**:
- 
+- 	_getNombre()_: devuelve el nombre.
+-	_setNombre(String nombre)_: Pone la propiedad nombre a nombre.
+-	_getCodigo()_: devuelve el codigo.
+-	_setCodigo(Integer codigo)_: Pone la propiedad codigo a codigo.
+-	_getAssets()_: devuelve la propiedad assets.
 -	_calcularNumeroAssets()_: Recorre assets y cuenta el número de tipo Asset hay.
 -	_añadirAsset(Asset a)_: Añade un tipo Asset a assets
 -	_añadirAssets(Collection<Asset> c)_: Añade una colección de Asset a assets.
