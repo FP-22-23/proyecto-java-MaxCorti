@@ -150,8 +150,13 @@ Descripción breve del tipo Assets.
 -	_añadirAssets(Collection<Asset> c)_: Añade una colección de Asset a assets.
 -	_eliminarAsset(int index)_: Elimina un tipo Asset de assets según su índice
 -	_existeId(Integer id)_: Recorre assets para ver si exista un tipo Asset con atributo id igual al parámetro pasado
+-	_existeId2(Integer id)_: devuelve un Boolean que depende de si el parametro id existe en uno de los tipos Asset dentro de la propiedad assets.
 -	_sumaValueMin2016()_: Recorre assets y suma todos los atributos valueMin2016 de cada Asset
+-	_sumaValueMin2016II()_: implementa el método stream para sumar todas las propiedades valueMin2016 de cada tipo Asset dentro de assets
 -	_getAssetsLand()_: Recorre assets y si su atributo underlyingAsset es land, se añade ese asset a una nueva lista y la devuelva.
+-	_getAssetsLand2_: usa el metodo stream para devolver todos los tipos Asset que tengan la propiedad underlyingAssets de tipo land dentro de assets
 -	_assetPorUnderlyingAsset()_: Recorre assets y devuelva una map con las claves siendo el atributo underlyingAsset de los asset, y los valores una lista de los asset con dicho atributo
 -	_conteoUbicaciones()_: Recorre assets y devuelve una map con las claves siendo el atributo location de los asset u los valores siendo el número de veces que aparezca ese location.
+-	_assetsMasTiempoHorario(String incomeType_: Método que recibe una ubicación, y devuelve el Asset con su propiedad location igual con el mayor AttachedSchedule
+-	_assetsBankAccountOrdenadoPorAS()_: metodo que devuelva una lista de los assets con la propiedad underlyingAssets de tipo BankAccount y ordenado por la propiedad attachedSchedule de mayor a menor
 -	_toString()_: Devuelve un String con todos los atributos.
