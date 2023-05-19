@@ -34,6 +34,37 @@ public class Assets_lector {
 		System.out.println(a.assetPorUnderlyingAsset());
 		System.out.println("=========================");
 		System.out.println(a.conteoUbicaciones());
+		System.out.println("=========================");
+		System.out.println("Entrega 3 Testing");
+		
+		
+		Assets assets = FactoriaAsset.leerAssets("data/2016 Part II Assets No Longer Listed.csv");
+		for(Asset asset: assets.getAssets()) {
+			System.out.println(asset);
+		}
+		System.out.println("=========================");
+		System.out.println(assets.existeId2(6));
+		System.out.println(assets.existeId2(7));
+		System.out.println("=========================");
+		System.out.println(assets.sumaValueMin2016II());
+		System.out.println("=========================");
+		System.out.println(assets.getAssetsLand2());
+		System.out.println("=========================");
+		System.out.println(assets.assetMasTiempoHorario("royalties"));
+		System.out.println("=========================");
+		System.out.println(assets.assetsBankAccountOrdenadoPorAS());
+		System.out.println("=========================");
+		System.out.println(assets.assetPorUnderlyingAsset2());
+		System.out.println("=========================");
+		System.out.println(assets.locationsSet());
+		System.out.println("=========================");
+		System.out.println(assets.lowestAssetByValueMin2016());		
+		System.out.println("=========================");
+		System.out.println(assets.getNAssetsMayorAttachedSchedule(3));	
+		System.out.println("=========================");
+		System.out.println(assets.underlyingAssetMayor2016ValueMax());	
+		
+
 	}
 
 }
