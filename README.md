@@ -159,4 +159,9 @@ Descripción breve del tipo Assets.
 -	_conteoUbicaciones()_: Recorre assets y devuelve una map con las claves siendo el atributo location de los asset u los valores siendo el número de veces que aparezca ese location.
 -	_assetsMasTiempoHorario(String incomeType_: Método que recibe una ubicación, y devuelve el Asset con su propiedad location igual con el mayor AttachedSchedule
 -	_assetsBankAccountOrdenadoPorAS()_: metodo que devuelva una lista de los assets con la propiedad underlyingAssets de tipo BankAccount y ordenado por la propiedad attachedSchedule de mayor a menor
+-	_assetPorUnderlyingAsset2()_: 	Método que devuelva un diccionario con las claves: la propiedad underlyingAsset, y los valores son una lista de objetos de tipo Asset que poseían dicha propiedad igual
+-	_locationsSet()_: un metodo que crea un Set de todas las ubicaciones de la propiedad location.
+-	_lowestAssetByValueMin2016()_: un metodo que devuelva un Map donde las claves son la propiedad ValueMin2016 y los valores el tipo minimo que tiene esa propiedad.
+-	_getNAssetsMayorAttachedSchedule(Integer n)_: devuelve un Map donde las claves son la propiedad incomeType y los valores son listas de n tipos Asset que posea esa propiedad ordenado de mayor a menor por su id.
+-	_underlyingAssetMayor2016ValueMax()_: un metodo que devuelva la propiedad underlyingAsset de un tipo Asset que tenga la propiedad ValueMax2016 mayor si existe, sino devuelve null.
 -	_toString()_: Devuelve un String con todos los atributos.
