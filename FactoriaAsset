@@ -3,8 +3,14 @@ package fp.assets;
 
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 import fp.common.underlyingAsset;
 import fp.utiles.Checkers;
 import fp.utiles.Ficheros;
@@ -18,7 +24,7 @@ public class FactoriaAsset {
 				 attachedSchedule, valueMin2016, valueMax2016, incomeType);
 	}
 	//Método que recibe un String y devueve un tipo Asset 
-	public static Asset creaAsset(String s){
+	public static Asset creaAssetStr(String s){
 		Checkers.checkNoNull(s);
 		String [] trozos = s.split(",");
 		Checkers.check("Formato de Asset no válido", trozos.length == 10);
@@ -42,11 +48,32 @@ public class FactoriaAsset {
 		List<String> lineas = Ficheros.leeFichero(fichero);
 		lineas.remove(0);
 		for(String linea: lineas) {
-			Asset a = creaAsset(linea);
+			Asset a = creaAssetStr(linea);
 			res.add(a);
 		}
 		return res;
 	}
+	
+	public static Assets leerAssets(String ruta) {
+		Assets res = null;
+		try {
+				Stream<Asset> assets=Files.lines(Paths.get(ruta))
+								.skip(1)
+								.map(FactoriaAsset::creaAssetStr)
+								;
+				res = new Assets(assets);
+		}catch(IOException e) {
+			System.out.println("Fichero no encontrado: "+ruta);
+			e.printStackTrace();
+		}
+		return res;
+				
+		
+		
+
+		
+	}
+	
 	//parsea que recibe un String y lo convierte en un tipo enum (underlyingAsset)
 	public static underlyingAsset parseaUnderlyingAsset(String s) {
 		underlyingAsset res = underlyingAsset.none;
