@@ -2,8 +2,12 @@ package fp.assets;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
+import java.util.Set;
 import java.util.SortedMap;
 import java.util.TreeMap;
 import java.util.stream.Collectors;
@@ -11,6 +15,7 @@ import java.util.stream.Stream;
 
 
 import fp.common.underlyingAsset;
+
 
 
 
@@ -32,7 +37,12 @@ public class Assets {
 		this.codigo=null;
 		this.assets = assets;
 	}
-	
+
+	public Assets(Stream<Asset> assets) {
+		nombre=null;
+		codigo=null;
+		this.assets = assets.collect(Collectors.toList());
+	}
 	
 	/**
 	 * @return the nombre
@@ -104,6 +114,11 @@ public class Assets {
 		}
 		return res;
 	}
+	//El mismo método con streams
+	public Boolean existeId2(Integer id) {
+		return assets.stream()
+				.anyMatch(x->x.getId().equals(id));
+	}
 	
 	//Método sumatorio
 	//Método que devuelva la suma de los valores minimios de 2016 de cada tipo Asset dentro de la lista assets
@@ -114,7 +129,12 @@ public class Assets {
 		}
 		return res;
 	}
-	
+	//El mismo método con streams
+	public Double sumaValueMin2016II() {
+		return assets.stream()
+				.mapToDouble(x->x.getValueMin2016())
+				.sum();
+	}
 	//Método selección con filtrado
 	//Método que devuelva todos los tipos Asset que tienen su atributo underlyingAsset de tipo land dentro de la lista assets
 	public List<Asset> getAssetsLand() {
@@ -127,6 +147,12 @@ public class Assets {
 		}
 			
 		return res;
+	}
+	//El mismo método con streams
+	public List<Asset> getAssetsLand2(){
+		return assets.stream()
+				.filter(x->x.getUnderlyingAssets().equals(underlyingAsset.land))
+				.collect(Collectors.toList());
 	}
 
 	//Método de agrupación
@@ -167,23 +193,94 @@ public class Assets {
 		return res;
 	}
 	
+	//ENTREGA 3
+	//Un máximo/mínimo con filtrado.
 	
+	//Método que recibe una ubicación, y devuelve el Asset con su 
+	//propiedad location igual con el mayor AttachedSchedule
+	public Asset assetMasTiempoHorario(String incomeType) {
+		return assets.stream()
+				.filter(x->x.getIncomeType().equals(incomeType))
+				.max(Comparator.comparing(Asset::getAttachedSchedule))
+				.get();
+	}
 	
+	//Método de selección, filtrado y ordenación
+	public List<Asset> assetsBankAccountOrdenadoPorAS(){
+		return assets.stream()
+				.filter(x->x.getUnderlyingAssets().equals(underlyingAsset.bank_account))
+				.sorted(Comparator.comparing(Asset::getAttachedSchedule).reversed())
+				.toList();
+	}
+	//Método que devuelva un diccionario con las claves: la propiedad underlyingAsset, y los
+	// valores son una lista de objetos de tipo Asset que poseían dicha propiedad igual
+	public Map<underlyingAsset, List<Asset>> assetPorUnderlyingAsset2() {
+		return assets.stream()
+				.collect(Collectors.groupingBy(Asset::getUnderlyingAssets));
+	}
+
+	//Un método implementando Collector mapping
+	public Set<String> locationsSet() {
+		return assets.stream()
+				.collect(Collectors.mapping(
+						Asset::getLocation, 
+						Collectors.toSet()));
+				
+	}
 	
+	//Un método que devuelva un Map en el que las claves sean un atributo o una 
+	//función sobre un atributo, y los valores son máximos/mínimos de los elementos que tienen ese valor
 	
+//	public Map<String, Optional<Asset>> minSchedulePorLocation(){
+//		return assets.stream()
+//				.collect(Collectors.groupingBy(Asset::getLocation,
+//						Collectors.mapping(a->a, 
+//								Collectors.minBy(Comparator.comparing(Asset::getAttachedSchedule)))));
+//	}
+	public Map<Double, Optional<Asset>> lowestAssetByValueMin2016(){
+		return assets.stream()
+				.collect(Collectors.groupingBy(Asset::getValueMin2016,
+						Collectors.mapping(a->a, 
+								Collectors.minBy(Comparator.comparing(Asset::getValueMin2016)))));
+	}
+//	Un método que devuelva un SortedMap en el que las claves sean un atributo o una función sobre 
+//	un atributo, y los valores sean listas con los n mejores o peores elementos que comparten el 
+//	valor de ese atributo (o función sobre el atributo).	
 	
+	public SortedMap<String, List<Asset>> getNAssetsMayorAttachedSchedule(Integer n){
+		return assets.stream()
+				.collect(Collectors.groupingBy(
+						Asset::getIncomeType,
+						TreeMap::new,
+						Collectors.collectingAndThen(
+								Collectors.toList(),
+								list -> list.stream()
+								.sorted(Comparator.comparing(Asset::getId).reversed())
+								.limit(n)
+								.collect(Collectors.toList()))));
+	}
 	
-	
-	
-	
-	
-	
-	
+//	Un método que calcule un Map y devuelva la clave con el valor asociado (mayor o menor) 
+//	de todo el Map.
+	public String underlyingAssetMayor2016ValueMax() {
+		Map<underlyingAsset, Double> ValueMax2016PorUnderlyingAsset=
+				assets.stream()
+				.collect(Collectors.toMap(Asset::getUnderlyingAssets, Asset::getValueMax2016, Double::max));
+
+		return ValueMax2016PorUnderlyingAsset.entrySet().stream()
+				.max(Map.Entry.comparingByValue())
+				.map(Map.Entry::getKey)
+				.map(Enum::name)
+				.orElse(null);
+				
+	}
 	
 	public int hashCode() {
 		return Objects.hash(assets, codigo, nombre);
 	}
 
+	
+	
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
